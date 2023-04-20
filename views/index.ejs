@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+    <%- include('./header.ejs', {title }); %>
+    <script type="text/javascript" src="./function.js"></script>
+    <body class="" style="margin: 15px;" >
+        <%- include('./nav.ejs', {title }); %>
+        <%- include('./modal.ejs'); %>
+        <script>
+            function random_line() {
+                let l = $('#accounts_spam').val().toString().replace(/\r\n/g, "\n").split('\n').filter(t => t !== "");
+                function r(n) {
+                    for (var e = n.length, i, u; e !== 0;) u = Math.floor(Math.random() * e), e -= 1, i = n[e], n[e] = n[u], n[u] = i;
+                    return n
+                }
+                l = r(l), l.join("\n");
+                $('#accounts_spam').val(l.join('\n'));
+                noti_success_left_top("Random account ok")
+            }
+        </script>
+        <div id="page-wrapper" style="min-height: 800px;">
+            <div class="row">
+                <div class="" style="margin: 15px;" role="main">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">Cấu hình Spam</div>
+                                <div class="panel-body">
+                                    <!-- <select type="text" class="form-control" id="type_setting" rows="4">
+                                        <option value="VN">VN</option>
+                                        <option value="ZA">ZA</option>
+                                    </select><br/> -->
+                                    Danh sách tài khoản:<br/>
+                                    <div class="input-group">
+                                        <textarea type="text" class="form-control" placeholder="user|pass|cookie|2fa" id="accounts_spam" rows="6"></textarea><br/>
+                                        <label class="input-group-addon"><button class="btn btn-default" onclick="random_line();">Random<br/>Account</button></label>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            Nội dung bài gốc:
+                                            <textarea type="text" class="form-control" placeholder="Phim sẽ gầy hay nè mọi người" rows="4" id="contents_owner"><%= info_spam["contents_owner"].join('\n'); %></textarea>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            Nội dung sau edit <u style="font-size: 10px;cursor: pointer;color: #990d0d;" data-toggle="collapse" href="#showHuongDanContent">Hướng dẫn</u>:
+                                            <textarea type="text" class="form-control" placeholder="Phim sẽ gầy hay nè mọi người" rows="4" id="contents_spam"><%= info_spam["contents"].join('\n'); %></textarea>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            Path spam:
+                                            <textarea type="text" class="form-control" placeholder="/abc" rows="4" id="paths_spam"><%= info_spam["paths"].join('\n'); %></textarea>
+                                        </div>
+                                    </div>
+                                    <font class="collapse" data-parent="#showHuongDanContent" id="showHuongDanContent" style="font-size: 11px;text-align: center;">
+                                    <b>@randomName</b>: random 1 kí tự tên A-Y<br>
+                                    <b>@icon_sad</b>: random 1 Icon buồn<br>
+                                    <b>@name</b>: random 1 frist name
+                                    </font><br/>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            Danh sách domain dùng spam:
+                                            <textarea type="text" class="form-control" placeholder="phimhay.net" id="domains_spam" rows="4"><%= info_spam["domains"].join('\n'); %></textarea><br/>
+                                            <div class="form-check">
+                                                <code>Loại bypass: </code><br>
+                                                <label class="radio-inline"><input <%= ((info_spam["type_bypass"] === "data") ? "checked" : "") %> type="radio" name="type_bypass" value="data">Bypass dung lượng</label>
+                                                <label class="radio-inline"><input <%= ((info_spam["type_bypass"] === "no_data") ? "checked" : "") %> type="radio" name="type_bypass" value="no_data">Không bypass dung lượng</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <code>Loại domain: </code><br>
+                                                <label class="radio-inline"><input <%= ((info_spam["type_protocal"] === "http") ? "checked" : "") %> type="radio" name="type_protocal" value="http">HTTP</label>
+                                                <label class="radio-inline"><input <%= ((info_spam["type_protocal"] === "https") ? "checked" : "") %> type="radio" name="type_protocal" value="https">HTTPS</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <code>Kiểu bắn request:</code> <br/>
+                                                <label class="radio-inline"><input type="radio" name="type_request" value="basic" <%= ((info_spam["type_request"] === "basic") ? "checked" : "") %>>Bình thường</label>
+                                                <label class="radio-inline"><input type="radio" name="type_request" value="android" <%= ((info_spam["type_request"] === "android") ? "checked" : "") %>>Fake android</label>
+                                                <label class="radio-inline"><input type="radio" name="type_request" value="iphone" <%= ((info_spam["type_request"] === "iphone") ? "checked" : "") %>>Fake iphone</label>
+                                            </div>
+                                            <div class="form-check">
+                                                <code>Loại token:</code> <br/>
+                                                <label class="radio-inline"><input type="radio" name="type_token" value="DTSG" <%= ((info_spam["type_token"] === "DTSG") ? "checked" : "") %>>Cookie (DTSG)</label>
+                                                <label class="radio-inline"><input type="radio" name="type_token" value="EAAG" <%= ((info_spam["type_token"] === "EAAG") ? "checked" : "") %>>EAAG</label>
+                                            </div>
+                                            <label class="radio-inline" style="color: green;margin-left: -20px;"><input <%= ((info_spam["test_link"] === true) ? "checked" : "") %> type="checkbox" name="test_link" /> Test link trước spam</label>
+                                            <br/>
+                                            <label class="radio-inline" style="color: green;margin-left: -20px;"><input <%= ((info_spam["random_path"] === true) ? "checked" : "") %> type="checkbox" name="random_path" /> Sử dụng random_path</label>
+                                            <br/>
+                                            <label class="radio-inline" style="color: green;margin-left: -20px;"><input <%= ((info_spam["sub_domain"] === true) ? "checked" : "") %> type="checkbox" name="sub_domain" /> Sử dụng subdomain</label>
+                                            <br/>
+                                            <label class="radio-inline" style="color: green;margin-left: -20px;"><input <%= ((info_spam["turn_off_noti"] === true) ? "checked" : "") %> type="checkbox" id="turn_off_noti"> Tắt thông báo sau spam</label>
+                                            <br/>
+                                            <label class="radio-inline" style="color: green;margin-left: -20px;"><input <%= ((info_spam["like_late"] === true) ? "checked" : "") %> type="checkbox" id="like_late"> Like sau spam</label><br/>
+                                            <label class="radio-inline" style="color: green;margin-left: -20px;"><input <%= ((info_spam["comment_late"] === true) ? "checked" : "") %> type="checkbox" id="comment_late"> Bình luận sau spam</label><br/>
+                                            <label class="radio-inline" style="color: green;margin-left: -20px;"><input <%= ((info_spam["edit_link_with_cookie"] === true) ? "checked" : "") %> type="checkbox" id="edit_link_with_cookie"> Edit Link với Cookie</label><br/>
+                                            <label class="radio-inline" style="color: green;margin-left: -20px;display: none;"><input <%= ((info_spam["filter_database"] === true) ? "checked" : "") %> type="checkbox" id="filter_database"> So sánh với database lưu trữ</label>
+                                            <label class="radio-inline" style="color: green;margin-left: -20px;"><input <%= ((info_spam["useChromeSpam"] === true) ? "checked" : "") %> type="checkbox" id="useChromeSpam"> Dùng Chrome Spam</label><br/>
+                                            <label class="radio-inline" style="color: green;margin-left: -20px;"><input <%= ((info_spam["load_link_child"] === true) ? "checked" : "") %> type="checkbox" name="load_link_child" /> Load link child</label>
+                                            <br/>
+                                            <label class="radio-inline" style="color: green;margin-left: -20px;"><input <%= ((info_spam["hide_post_ver_2"] === true) ? "checked" : "") %> type="checkbox" id="hide_post_ver_2"> Ẩn post method 2</label><br/>
+                                            <div class="input-group" style="margin-top: 3px;">
+                                                <span class="input-group-addon" id="basic-addon1">Nội dung</span>
+                                                <input id="message_comment" type="text" class="form-control" placeholder="30000" value="<%= info_spam['message_comment']; %>" />
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-check">
+                                                Kiểu spam: <br/>
+                                                <label class="radio-inline"><input type="radio" name="type_spam" value="profile" <%= ((info_spam["type_spam"] === "profile") ? "checked" : "") %>>Tag trên Profile</label>
+                                                <label class="radio-inline" style="display: none;"><input type="radio" name="type_spam" value="group" <%= ((info_spam["type_spam"] === "group") ? "checked" : "") %>>Tạo group và tag</label>
+                                            </div><br/>
+                                            <div class="form-check">
+                                                Kiểu get friends: <br/>
+                                                <label class="radio-inline"><input type="radio" name="type_friend" value="friend" <%= ((info_spam["type_friend"] === "friend") ? "checked" : "") %>>Chỉ lấy bạn bè</label>
+                                                <label class="radio-inline"><input type="radio" name="type_friend" value="friend_of_friend" <%= ((info_spam["type_friend"] === "friend_of_friend") ? "checked" : "") %>>Lấy bạn bè của bạn bè</label>
+                                            </div>
+                                            <br/>
+                                            <div class="input-group" style="margin-top: 3px;">
+                                                <span class="input-group-addon" id="basic-addon1">Số link child</span>
+                                                <input type="number" class="form-control" id="limit_link_child" placeholder="3" value="<%= info_spam['limit_link_child']; %>" />
+                                            </div>
+                                            <br/>
+                                            <div class="input-group" style="margin-top: 3px;">
+                                                <span class="input-group-addon" id="basic-addon1">Endpoint máy chủ</span>
+                                                <input type="text" class="form-control" placeholder="0" id="endpoint_server" value="<%= info_spam['endpoint_server']; %>" />
+                                            </div>
+                                            <br/>
+                                            <div class="input-group" style="margin-top: 3px;">
+                                                <span class="input-group-addon" id="basic-addon1">Số bạn bè thấp nhất</span>
+                                                <input type="text" class="form-control" placeholder="0" id="min_friend" value="<%= info_spam['min_friend']; %>" />
+                                            </div>
+                                            <br/>
+                                            <div class="input-group" style="margin-top: 3px;">
+                                                <span class="input-group-addon" id="basic-addon1">Năm tạo cao nhất</span>
+                                                <input type="text" class="form-control" placeholder="0" id="max_year" value="<%= info_spam['max_year']; %>" />
+                                            </div>
+                                            <br/>
+                                            <div class="input-group" style="margin-top: 3px;">
+                                                <span class="input-group-addon" id="basic-addon1">Limit friend</span>
+                                                <input type="text" class="form-control" placeholder="5000" id="limit_friend" value="<%= info_spam['limit_friend']; %>" />
+                                            </div>
+                                            <br/>
+                                            <div class="input-group" style="margin-top: 3px;">
+                                                <span class="input-group-addon" id="basic-addon1">Friend / Post</span>
+                                                <input type="text" class="form-control" id="friend_tag_per_post" placeholder="99" value="<%= info_spam['friend_tag_per_post']; %>" />
+                                            </div>
+                                            <br/>
+                                            <div class="input-group" style="margin-top: 3px;display: none;">
+                                                <span class="input-group-addon" id="basic-addon1">Mã nước spam / Lọc nhóm</span>
+                                                <input type="text" class="form-control" id="country_filter_group" placeholder="VN" value="<%= info_spam['country_filter_group']; %>" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="padding: 15px;">
+                                        <button class="btn btn-primary" id="btnStartSpam" onclick="startSpamChild();" disabled style="width: 100%; height: 35px;">Bắt đầu Spam</button>
+                                        <br/><button class="btn btn-warning" id="btnPauseSpam" onclick="pauseSpamChild();" disabled style="width: 100%; height: 35px;margin-top: 10px;">Dừng lại</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <%- include('./setup_1.ejs', { info_setup, user }); %>
+                    </div>
+                    <div class="row" style="margin: 5px;">
+                        <div class="col-sm-4">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">Account Spam OK</div>
+                                <div class="panel-body">
+                                    <textarea type="text" class="form-control" placeholder="" rows="5" id="accounts_ok"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">Account Running Again</div>
+                                <div class="panel-body">
+                                    <textarea type="text" class="form-control" placeholder="" rows="5" id="accounts_again"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">Account Spam Fail</div>
+                                <div class="panel-body">
+                                    <textarea type="text" class="form-control" placeholder="" rows="5" id="accounts_fail"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin: 5px;" >
+                        <div class="col-sm-12">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    Lịch sử spam
+                                </div>
+                                <div class="table-responsive" style="min-height: 1000px;">
+                                    <button style="cursor: pointer;margin:5px 5px 5px 5px;width: 100%;" class="btn btn-primary" onclick="checkAllPost('xx');">Check All Profile</button>
+                                    <button style="cursor: pointer;margin:5px 5px 5px 5px;width: 100%;" class="btn btn-primary" onclick="checkAllPostGoc('xx');">Check All Post Gốc</button>
+                                    <button style="cursor: pointer;margin:5px 5px 5px 5px;width: 100%;" class="btn btn-default" onclick="clear_account_spam_fail('xx');">Clear Account Spam Fail</button>
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th style="text-align: center;">
+                                                    STT
+                                                </th>
+                                                <th style="text-align: center;">
+                                                    Thời Gian
+                                                </th>
+                                                <th style="text-align: center;">
+                                                    Account
+                                                </th>
+                                                <th style="text-align: left;">
+                                                    Thông tin
+                                                </th>
+                                                <th style="text-align: center;">
+                                                    Số bạn bè
+                                                </th>
+                                                <th style="text-align: left;width: 30%;">
+                                                    Process SPAM
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="show_account_spam">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </body>
+    </html>

@@ -1,0 +1,284 @@
+    <div class="col-sm-6">
+        <div class="panel panel-default">
+            <div class="panel-heading">Cấu hình Login</div>
+            <div class="panel-body">
+                <div class="form-check"> 
+                    Phương thức đăng nhập: <br/>
+                    <label class="radio-inline"><input type="radio" name="type_login" value="cookie" <%= ((info_setup["type_login"] === "cookie") ? "checked" : "") %> >Cookie</label>
+                    <label class="radio-inline"><input type="radio" name="type_login" value="cookie2" <%= ((info_setup["type_login"] === "cookie2") ? "checked" : "") %> >Cookie 2</label>
+                    <!-- <label class="radio-inline"><input type="radio" name="type_login" value="edit_cookie" <%= ((info_setup["type_login"] === "edit_cookie") ? "checked" : "") %> >Edit Cookie</label>
+                    <label class="radio-inline"><input type="radio" name="type_login" value="cookie_relogin" <%= ((info_setup["type_login"] === "cookie_relogin") ? "checked" : "") %> >Cookie ReLogin</label>
+                    <label class="radio-inline"><input type="radio" name="type_login" value="user_pass" <%= ((info_setup["type_login"] === "user_pass") ? "checked" : "") %>>User|Pass (option)</label> -->
+                </div>
+                <br/>
+                <div class="form-check">
+                    Login site: <br/>
+                    <label class="radio-inline"><input type="radio" name="site_login" value="wfb" <%= ((info_setup["site_login"] === "wfb") ? "checked" : "") %>>www.facebook</label>
+                    <label class="radio-inline"><input type="radio" name="site_login" value="mfb" <%= ((info_setup["site_login"] === "mfb") ? "checked" : "") %>>m.facebook</label>
+                    <label class="radio-inline"><input type="radio" name="site_login" value="mbasic" <%= ((info_setup["site_login"] === "mbasic") ? "checked" : "") %>>mbasic.facebook</a>
+                </div>
+                <br/>
+                <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon1">Số luồng chạy</span>
+                    <input type="number" class="form-control" placeholder="5" value="<%= info_setup['thread']; %>" id="thread" aria-describedby="basic-addon1">
+                </div>
+                <br/>
+                <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon1">UA Logging</span>
+                    <textarea type="text" rows="3" class="form-control" placeholder="" id="UAS" aria-describedby="basic-addon1"><%= info_setup['UAS'].join('\n'); %></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">Cấu hình Reset mạng</div>
+                <div class="panel-body">
+                    <script type="text/javascript">
+                        $(document).ready(function() {
+                            var type_reset = '<%= info_setup["type_reset"]; %>';
+                            if( type_reset !== "no_reset" ){
+                                var name_collapse = CollapseType_Resets.filter(t => t.value === type_reset)[0]["collapse"];
+                                $('#'+ name_collapse).collapse('show');
+                            }
+                        });
+
+                        var CollapseType_Resets = [{
+                            collapse: 'settingDcom',
+                            value: 'dcom'
+                        },{
+                            collapse: 'settingShaDow',
+                            value: 'shadow'
+                        },{
+                            collapse: 'settingXproxy',
+                            value: 'xproxy'
+                        },{
+                            collapse: 'settingXproxyLan',
+                            value: 'xproxy_lan'
+                        },{
+                            collapse: 'setting911',
+                            value: '911'
+                        },{
+                            collapse: 'settingOxylabThue',
+                            value: 'oxylab_thue'
+                        },{
+                            collapse: 'settingOxylab',
+                            value: 'oxylab'
+                        },{
+                            collapse: 'settingPyproxy',
+                            value: 'pyproxy'
+                        },{
+                            collapse: 'settingPIA',
+                            value: 'pia'
+                        },{
+                            collapse: 'settingBrowsec',
+                            value: 'browsec'
+                        },{
+                            collapse: 'settingBrigthdata',
+                            value: 'brightdata'
+                        }];
+                        function closeCollapseType_Reset(name){
+                            CollapseType_Resets.map(t => {
+                                if( t["collapse"] !== name ){
+                                    $('#'+ t["collapse"]).collapse('hide');
+                                }else{
+                                    $('#'+ t["collapse"]).collapse('show');
+                                }
+                            });
+                        }
+                    </script>
+                    <div class="form-check" style="margin-bottom: 10px;"> 
+                        Cấu hình reset: <br/>
+                        <label class="radio-inline"><input onclick="closeCollapseType_Reset('')" <%= ((info_setup["type_reset"] === "no_reset") ? "checked" : "") %> type="radio" onclick="('settingNoreset');" value="no_reset" name="type_reset">Không reset</label>
+                        <label class="radio-inline"><input <%= ((info_setup["type_reset"] === "dcom") ? "checked" : "") %> type="radio" name="type_reset" value="dcom" onclick="closeCollapseType_Reset('settingDcom', 'dcom');">Dcom</label>
+                        <label class="radio-inline"><input <%= ((info_setup["type_reset"] === "xproxy") ? "checked" : "") %> type="radio" onclick="closeCollapseType_Reset('settingXproxy');" name="type_reset" value="xproxy">Xproxy</label>
+                        <label class="radio-inline"><input <%= ((info_setup["type_reset"] === "xproxy_lan") ? "checked" : "") %> type="radio" name="type_reset" onclick="closeCollapseType_Reset('settingXproxyLan');" value="xproxy_lan">Xproxy LAN</label>
+                        
+                        <div >
+                            <br/>
+                            <code>Proxy dịch vụ:</code><br/>
+                            <label class="radio-inline"><input <%= ((info_setup["type_reset"] === "shadow") ? "checked" : "") %> type="radio" onclick="closeCollapseType_Reset('settingShaDow');" name="type_reset" value="shadow">Shadow</label>
+                            <label class="radio-inline"><input <%= ((info_setup["type_reset"] === "911") ? "checked" : "") %> type="radio" name="type_reset" onclick="closeCollapseType_Reset('setting911');" value="911">911.re</label>
+                            <label class="radio-inline"><input <%= ((info_setup["type_reset"] === "oxylab_thue") ? "checked" : "") %> type="radio" name="type_reset" onclick="closeCollapseType_Reset('settingOxylabThue');" value="oxylab_thue">OxyLab</label>
+                            <label class="radio-inline"><input <%= ((info_setup["type_reset"] === "oxylab") ? "checked" : "") %> type="radio" name="type_reset" onclick="closeCollapseType_Reset('settingOxylab');" value="oxylab">OxyLab Per IP</label>
+                            <label class="radio-inline"><input <%= ((info_setup["type_reset"] === "pyproxy") ? "checked" : "") %> type="radio" name="type_reset" onclick="closeCollapseType_Reset('settingPyproxy');" value="pyproxy">Pyproxy</label>
+                            <label class="radio-inline"><input <%= ((info_setup["type_reset"] === "brightdata") ? "checked" : "") %> type="radio" name="type_reset" onclick="closeCollapseType_Reset('settingBrigthdata');" value="brightdata">Brigthdata</label>
+                        </div>
+						<br/><code>Proxy free:</code><br/>
+                        <label class="radio-inline"><input <%= ((info_setup["type_reset"] === "pia") ? "checked" : "") %> type="radio" name="type_reset" onclick="closeCollapseType_Reset('settingPIA');" value="pia">PIA</label>
+                        <label class="radio-inline"><input <%= ((info_setup["type_reset"] === "browsec") ? "checked" : "") %> type="radio" name="type_reset" onclick="closeCollapseType_Reset('settingBrowsec');" value="browsec">Browsec</label>
+                    </div>
+                    <div id="settingBrigthdata" class="collapse" data-parent="#settingBrigthdata">
+                        <code>Chế độ 1 acc / 1 IP / run Brightdata</code><br/>
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">Server</span>
+                            <input type="text" class="form-control" id="brightdata_endpoint" placeholder="pr.oxylabs.io:7777" value="<%= info_setup['brightdata']['endpoint'] %>" />
+                        </div>
+                        <br/>
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">Country Code</span>
+                            <input type="text" class="form-control" id="brightdata_country" placeholder="vn" value="<%= info_setup['brightdata']['country'] %>" />
+                        </div>
+                        <br/>
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">Username</span>
+                            <input type="text" class="form-control" id="brightdata_username" placeholder="thanhtung" value="<%= info_setup['brightdata']['username'] %>" />
+                            <span class="input-group-addon" id="basic-addon1">Password</span>
+                            <input type="text" class="form-control" id="brightdata_password" placeholder="deptrai" value="<%= info_setup['brightdata']['password'] %>" />
+                        </div>
+                    </div>
+                    <div id="settingOxylabThue" class="collapse" data-parent="#settingOxylabThue">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">Danh sách username:pass</span>
+                            <textarea rows="5" type="text" class="form-control" placeholder="customer-wland428-sessid-516090-cc-za-sesstime-10:xxxxx" id="accounts_oxylab"><%= info_setup['oxylab_thue']["accounts"].join('\n') %></textarea>
+                        </div><br/>
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">Server</span>
+                            <input type="text" class="form-control" id="oxylab_thue_endpoint" placeholder="pr.oxylabs.io:7777" value="<%= info_setup['oxylab_thue']['endpoint'] %>" />
+                        </div>
+                    </div>
+                    <div id="settingOxylab" class="collapse" data-parent="#settingOxylab">
+                        <code>Chế độ 1 acc / 1 IP / run Oxylab</code><br/>
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">Server</span>
+                            <input type="text" class="form-control" id="oxylab_endpoint" placeholder="pr.oxylabs.io:7777" value="<%= info_setup['oxylab']['endpoint'] %>" />
+                        </div>
+                        <br/>
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">Country Code</span>
+                            <input type="text" class="form-control" id="oxylab_country" placeholder="vn" value="<%= info_setup['oxylab']['country'] %>" />
+                            <span class="input-group-addon" id="basic-addon1">Time limit</span>
+                            <input type="text" class="form-control" id="oxylab_time_limit" placeholder="10" value="<%= info_setup['oxylab']['time_limit'] %>" />
+                        </div>
+                        <br/>
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">Username</span>
+                            <input type="text" class="form-control" id="oxylab_username" placeholder="thanhtung" value="<%= info_setup['oxylab']['username'] %>" />
+                            <span class="input-group-addon" id="basic-addon1">Password</span>
+                            <input type="text" class="form-control" id="oxylab_password" placeholder="deptrai" value="<%= info_setup['oxylab']['password'] %>" />
+                        </div>
+                    </div>
+                    <div id="settingPyproxy" class="collapse" data-parent="#settingPyproxy">
+                        <!-- <code>Chế độ 1 acc / 1 IP / run Oxylab</code><br/> -->
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">Endpoint</span>
+                            <input type="text" class="form-control" id="pyproxy_endpoint" placeholder="pr.oxylabs.io" value="pr.pyproxy.com" />
+                            <span class="input-group-addon" id="basic-addon1">Port</span>
+                            <input type="text" class="form-control" id="pyproxy_port" placeholder="7777" value="16666" />
+                        </div>
+                        <br/>
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">Country Code</span>
+                            <input type="text" class="form-control" id="pyproxy_country" placeholder="vn" value="<%= info_setup['pyproxy']?.['country'] %>" />
+                            <span class="input-group-addon" id="basic-addon1">Time limit</span>
+                            <input type="text" class="form-control" id="pyproxy_time_limit" placeholder="10" value="<%= info_setup['pyproxy']?.['time_limit'] %>" />
+                        </div>
+                        <br/>
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">Username</span>
+                            <input type="text" class="form-control" id="pyproxy_username" placeholder="thanhtung" value="<%= info_setup['pyproxy']?.['username'] %>" />
+                            <span class="input-group-addon" id="basic-addon1">Password</span>
+                            <input type="text" class="form-control" id="pyproxy_password" placeholder="deptrai" value="<%= info_setup['pyproxy']?.['password'] %>" />
+                        </div>
+                    </div>
+                    <div id="settingOxylabThue" class="collapse" data-parent="#settingOxylabThue">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">Danh sách username:pass</span>
+                            <textarea rows="5" type="text" class="form-control" placeholder="customer-wland428-sessid-516090-cc-za-sesstime-10:xxxxx" id="accounts_oxylab"><%= info_setup['oxylab_thue']["accounts"].join('\n') %></textarea>
+                        </div><br/>
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">Server</span>
+                            <input type="text" class="form-control" id="oxylab_thue_endpoint" placeholder="pr.oxylabs.io:7777" value="<%= info_setup['oxylab_thue']['endpoint'] %>" />
+                        </div>
+                    </div>
+                    <div id="settingDcom" class="collapse" data-parent="#settingDcom">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">Lệnh rasdial</span>
+                            <input type="text" class="form-control" placeholder="rasdial /disconnect && rasdial viettel" id="rasdial" value="<%= info_setup['rasdial'] %>" />
+                        </div>
+                    </div>
+                    <div id="settingShaDow" class="collapse" data-parent="#settingShaDow">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">Endpoint ShaDow</span>
+                            <input type="text" class="form-control" id="shadow_endpoint" placeholder="192.168.1.179" value="<%= info_setup['shadow']['endpoint'] %>" />
+                        </div><br/>
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">Danh sách port chạy</span>
+                            <textarea type="text" class="form-control" id="shadow_ports" placeholder="4001" rows="4"><%= info_setup['shadow']['ports'].join('\n'); %></textarea>
+                        </div>
+                        <label class="radio-inline" style="color: green;margin-left: -20px;"><input <%= ((info_setup['shadow']["random_proxy"] === true) ? "checked" : "") %> type="checkbox" id="random_xproxy" name="random_shadow" /> Chạy hết proxy 1 lượt</label>
+                    </div>
+                    <div id="settingXproxy" class="collapse" data-parent="#settingXproxy">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">Endpoint Xproxy</span>
+                            <input type="text" class="form-control" id="xproxy_endpoint" placeholder="192.168.1.179" value="<%= info_setup['xproxy']['endpoint'] %>" />
+                        </div><br/>
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">Danh sách port chạy</span>
+                            <textarea type="text" class="form-control" id="xproxy_ports" placeholder="4001" rows="4"><%= info_setup['xproxy']['ports'].join('\n'); %></textarea>
+                        </div>
+                        <label class="radio-inline" style="color: green;margin-left: -20px;"><input <%= ((info_setup['xproxy']["random_proxy"] === true) ? "checked" : "") %> type="checkbox" id="random_xproxy" name="random_xproxy" /> Chạy hết proxy 1 lượt</label>
+                    </div>
+                    <div id="settingXproxyLan" class="collapse" data-parent="#settingXproxy">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">Endpoint Xproxy Lan</span>
+                            <input type="text" class="form-control" id="xproxylan_endpoint" placeholder="192.168.1.179" value="<%= info_setup['xproxy_lan']['endpoint'] %>" />
+                        </div><br/>
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">Danh sách port chạy</span>
+                            <textarea type="text" class="form-control" id="xproxylan_ports" placeholder="4001" rows="4"><%= info_setup['xproxy_lan']['ports'].join('\n'); %></textarea>
+                        </div>
+                        <label class="radio-inline" style="color: green;margin-left: -20px;"><input <%= ((info_setup['xproxy_lan']["random_xproxylan"] === true) ? "checked" : "") %> type="checkbox" name="random_xproxylan" /> Chạy hết proxy 1 lượt</label>
+                    </div>
+                    <div id="settingPIA" class="collapse" data-parent="#settingPIA">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">Danh sách country code -> IP<br/><br/>
+                                ALL, JP,UK,DE,US,CZ,CA,
+                                <br/>
+                                BE,IN,ES,SE,AU,LU,
+                                <br/>
+                                AE,DK,IT,FI,HU,IL,
+                                <br/>
+                                IE,NL,SG,NZ,RO,FR,
+                                <br/>AT,NO,PL
+                                </span>
+                                <textarea type="text" rows="5" class="form-control" id="pia_countrys" placeholder="US" rows="4"><%= info_setup['pia']['countrys'].join('\n'); %></textarea>
+                        </div>
+                    </div>
+                    <div id="settingBrowsec" class="collapse" data-parent="#settingBrowsec">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">Danh sách country code -> IP<br/><br/>- Support: [ALL, US, UK, NL, SG]</span>
+                            <textarea type="text" class="form-control" id="browsec_countrys" placeholder="US" rows="4"><%= info_setup['browsec']['countrys'].join('\n'); %></textarea>
+                        </div>
+                    </div>
+                    <div id="setting911" class="collapse" data-parent="#settingXproxy">
+                        <code>
+                            -> Đầu IP: Dùng * để lấy ip random<br/>
+                            -> Port 911: Nhập 3000 để fake toàn bộ máy, hoặc các port 5001,5002,5003 để spam nhiều tab<br/>
+                            -> Mã nước: Chú ý ghi đúng mã nước
+                        </code><br/><br/>
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">Folder 911</span>
+                            <input type="text" class="form-control" id="911_folder" placeholder="E:/3.26/ProxyTool/AutoProxyTool.exe" value="<%= info_setup['911']['folder']; %>" />
+                        </div><br/>
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">Mã nước cần Fake IP</span>
+                            <input type="text" class="form-control" id="911_country" placeholder="TH" value="<%= info_setup['911']['country']; %>" />
+                            <span class="input-group-addon" id="basic-addon1">Đầu IP</span>
+                            <input type="text" class="form-control" id="911_head_ip" placeholder="27" value="<%= info_setup['911']['head_ip']; %>" />
+                            <span class="input-group-addon" id="basic-addon1">Port 911</span>
+                            <input type="text" class="form-control" id="911_port" placeholder="5001" value="<%= info_setup['911']['port']; %>" />
+                        </div>
+                    </div>
+                    <hr/>
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">Bao nhiêu account sẽ reset</span>
+                        <input type="number" class="form-control" placeholder="5" value="<%= info_setup['limit_account_reset']; %>" id="limit_account_reset" aria-describedby="basic-addon1">
+                    </div>
+                    <br/>
+                    <div class="input-group">
+                        <span class="input-group-addon" id="basic-addon1">Thời gian (giây) đợi sau reset</span>
+                        <input type="number" id="time_wait_reset" class="form-control" placeholder="5" value="<%= info_setup["time_wait_reset"] %>" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
